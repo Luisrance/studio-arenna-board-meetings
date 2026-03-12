@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Arenna - Resumen de Consejo Marzo 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Brand Fonts: Red Hat Display and Noto Serif -->
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700&family=Noto+Serif:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Red Hat Display', 'sans-serif'],
+                        serif: ['Noto Serif', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cream: '#FFF9F3',
+                            blue: '#454A60',
+                            mint: '#B7D7C0',
+                            green: '#718F85',
+                            pink: '#ECCDBC',
+                            orange: '#ED7A42',
+                            terracotta: '#B93700',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #FFF9F3;
+            color: #454A60;
+            font-family: 'Red Hat Display', sans-serif;
+        }
+        .italic-emphasis {
+            font-family: 'Noto Serif', serif;
+            font-style: italic;
+            letter-spacing: -0.025em;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .nav-btn.active {
+            background-color: #454A60;
+            color: #FFF9F3;
+        }
+        .progress-fill {
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px -2px rgba(69, 74, 96, 0.08);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen pb-12">
+
+    <header class="bg-brand-blue text-brand-cream py-10 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div>
+                    <h1 class="text-4xl font-bold tracking-tight">Studio Arenna.</h1>
+                    <p class="text-brand-mint mt-2 text-lg font-medium">Resumen Ejecutivo de Seguimiento — Consejo de Administración</p>
+                </div>
+                <div class="mt-6 md:mt-0 text-right">
+                    <p class="font-semibold text-white text-xl">Marzo 2026</p>
+                    <p class="text-brand-pink mt-1 italic-emphasis">Unlock your potential</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 space-y-12">
+
+        <section id="corporate" class="space-y-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold border-b border-brand-mint pb-3 text-brand-blue">1. Asuntos Corporativos y Administrativos</h2>
+                <p class="text-brand-blue opacity-80 mt-3 max-w-3xl">Hitos de capitalización y estatus de trámites legales clave. Esta sección confirma la solidez financiera necesaria para la ejecución operativa.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl card-shadow border border-brand-mint/30 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-brand-green uppercase tracking-[0.2em] mb-3">Cierre de Inversión</div>
+                        <div class="text-5xl font-bold text-brand-blue mb-4 tracking-tight">$200,000 <span class="text-xl text-brand-green font-medium">USD</span></div>
+                        <p class="text-base text-brand-blue/70">Inversión especial formalizada respetando la valoración de la ronda de diciembre 2025.</p>
+                    </div>
+                    <div class="mt-6 inline-flex items-center text-sm font-bold text-brand-blue bg-brand-mint/40 px-4 py-2 rounded-full w-max">
+                        Fondos depositados y documentación suscrita
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl card-shadow border border-brand-mint/30 flex flex-col justify-between">
+                    <div>
+                        <div class="text-xs font-bold text-brand-green uppercase tracking-[0.2em] mb-3">Estatus Legal (Visas)</div>
+                        <div class="text-3xl font-bold text-brand-blue mb-4">Esperando Cita</div>
+                        <p class="text-base text-brand-blue/70">Solicitud del 15 de noviembre. Las solicitudes previas ya están recibiendo asignación de fechas.</p>
+                    </div>
+                    <div class="mt-6 inline-flex items-center text-sm font-bold text-brand-blue bg-brand-pink/50 px-4 py-2 rounded-full w-max">
+                        Resolución estimada: Próximas 2 semanas
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="operations" class="space-y-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold border-b border-brand-mint pb-3 text-brand-blue">2. Estatus Operativo de Sedes</h2>
+                <p class="text-brand-blue opacity-80 mt-3 max-w-3xl">Progreso de infraestructura e instalaciones. Seleccione una ubicación para revisar detalles técnicos, próximos pasos y porcentaje de avance.</p>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow border border-brand-mint/30 overflow-hidden flex flex-col lg:flex-row">
+                <div class="w-full lg:w-1/3 bg-brand-cream/50 border-r border-brand-mint/20 p-6 space-y-3" id="site-nav">
+                    <button class="nav-btn active w-full text-left px-5 py-4 rounded-xl font-bold text-brand-blue border border-transparent hover:border-brand-mint transition-all" data-site="denver">
+                        Denver (Barberry)
+                    </button>
+                    <button class="nav-btn w-full text-left px-5 py-4 rounded-xl font-bold text-brand-blue border border-transparent hover:border-brand-mint transition-all" data-site="parker">
+                        Parker
+                    </button>
+                    <button class="nav-btn w-full text-left px-5 py-4 rounded-xl font-bold text-brand-blue border border-transparent hover:border-brand-mint transition-all" data-site="austin">
+                        Austin
+                    </button>
+                    <button class="nav-btn w-full text-left px-5 py-4 rounded-xl font-bold text-brand-blue border border-transparent hover:border-brand-mint transition-all" data-site="fortworth">
+                        Fort Worth & Expansión
+                    </button>
+                </div>
+
+                <div class="w-full lg:w-2/3 p-8 md:p-12" id="site-content">
+                    <div class="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
+                        <h3 id="panel-title" class="text-3xl font-bold text-brand-blue">Denver (Barberry)</h3>
+                        <span id="panel-status-badge" class="px-4 py-1.5 text-xs font-bold uppercase tracking-widest rounded-full bg-brand-mint text-brand-blue">En Instalación</span>
+                    </div>
+
+                    <div class="mb-10">
+                        <div class="flex justify-between text-sm font-bold text-brand-blue mb-3 uppercase tracking-wider">
+                            <span>Progreso de Obra</span>
+                            <span id="panel-progress-text">80%</span>
+                        </div>
+                        <div class="w-full bg-brand-cream border border-brand-mint/20 rounded-full h-3">
+                            <div id="panel-progress-bar" class="progress-fill bg-brand-blue h-full rounded-full" style="width: 80%"></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div>
+                            <h4 class="text-xs font-bold text-brand-green uppercase tracking-[0.2em] mb-3">Estatus Actual</h4>
+                            <p id="panel-desc" class="text-brand-blue leading-relaxed text-lg">La llegada de las canchas Padel Galis está programada entre el 20 y el 28 de marzo. Se mantiene una coordinación estrecha con el Departamento de Bomberos y MEP, estando en la última iteración para obtener la aprobación del plan.</p>
+                        </div>
+
+                        <div class="bg-brand-cream/30 p-6 rounded-2xl border border-brand-mint/30">
+                            <h4 class="text-xs font-bold text-brand-blue uppercase tracking-[0.2em] mb-4">Próximos Pasos Inmediatos</h4>
+                            <ul id="panel-next" class="list-none space-y-3 text-brand-blue">
+                                <li class="flex items-start"><span class="text-brand-orange font-bold mr-3 mt-0.5">/</span> Ejecución de trabajos mínimos (instalación de canchas, baños).</li>
+                                <li class="flex items-start"><span class="text-brand-orange font-bold mr-3 mt-0.5">/</span> Instalación de puerta contra incendios "2-hour rolling door".</li>
+                                <li class="flex items-start"><span class="text-brand-orange font-bold mr-3 mt-0.5">/</span> Instalación de sistema de circulación de aire.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="space-y-6">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold border-b border-brand-mint pb-3 text-brand-blue">3. Oportunidades Estratégicas: Caso 20x10</h2>
+                <p class="text-brand-blue opacity-80 mt-3 max-w-3xl">Comparativa de la oferta de compra recibida frente a proyecciones. Información crítica para la toma de decisión sobre una potencial contraoferta estratégica.</p>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl card-shadow border border-brand-mint/30">
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="w-full lg:w-1/2">
+                        <div class="chart-container">
+                            <canvas id="valuationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-1/2 space-y-6">
+                        <h3 class="text-2xl font-bold text-brand-blue">Análisis de Oferta (CDMX)</h3>
+                        <p class="text-brand-blue/80 text-lg leading-relaxed">Se evalúa la adquisición de la operación del club 20x10. Existe una ventana de oportunidad ante el interés de salida de socios actuales a la valoración actual.</p>
+
+                        <div class="grid grid-cols-2 gap-6 mt-4">
+                            <div class="bg-brand-cream p-5 rounded-2xl border border-brand-mint/20">
+                                <div class="text-[10px] text-brand-terracotta uppercase font-bold tracking-widest mb-1">Oferta Recibida</div>
+                                <div class="text-2xl font-bold text-brand-terracotta">$7.25M MXN</div>
+                            </div>
+                            <div class="bg-brand-cream p-5 rounded-2xl border border-brand-mint/20">
+                                <div class="text-[10px] text-brand-blue uppercase font-bold tracking-widest mb-1">Valor Proyectado</div>
+                                <div class="text-2xl font-bold text-brand-blue">$10.0M MXN</div>
+                            </div>
+                        </div>
+
+                        <div class="bg-brand-blue p-6 rounded-2xl">
+                            <h4 class="font-bold text-brand-mint text-xs uppercase tracking-widest mb-2">Estrategia Studio Arenna</h4>
+                            <p class="text-sm text-brand-cream/90 leading-relaxed italic-emphasis">Evaluar contraoferta con premio estratégico, sujeta a la renovación de arrendamiento y alineación de socios.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="mt-16 py-12 text-center border-t border-brand-mint/20">
+        <p class="text-brand-blue font-bold text-sm tracking-widest uppercase">Studio Arenna. 2026</p>
+        <p class="text-brand-blue/50 text-xs mt-2 italic-emphasis">Arenna es movimiento y conexión</p>
+    </footer>
+
+    <script>
+        const siteData = {
+            denver: {
+                title: 'Denver (Barberry)',
+                status: 'En Instalación',
+                statusColor: 'bg-brand-mint text-brand-blue',
+                progress: 80,
+                desc: 'La llegada de las canchas Padel Galis está programada entre el 20 y el 28 de marzo. Se mantiene una coordinación estrecha con el Departamento de Bomberos y MEP, estando en la última iteración para obtener la aprobación del plan.',
+                next: [
+                    'Ejecución de trabajos mínimos (instalación de canchas, baños).',
+                    'Instalación de puerta contra incendios "2-hour rolling door".',
+                    'Instalación de sistema de circulación de aire.'
+                ]
+            },
+            parker: {
+                title: 'Parker',
+                status: 'Zonificación',
+                statusColor: 'bg-brand-pink text-brand-blue',
+                progress: 60,
+                desc: 'Nos encontramos en la etapa final del proceso de zonificación (Zoning & Planning) con la ciudad.',
+                next: [
+                    'Obtener aprobación final de la ciudad.',
+                    'Pago del 20% de anticipo ($40,000 USD) para cálculos estructurales.',
+                    'Inicio de trámites de permisos de construcción.'
+                ]
+            },
+            austin: {
+                title: 'Austin',
+                status: 'Revisión Estratégica',
+                statusColor: 'bg-brand-orange text-white',
+                progress: 30,
+                desc: 'Pivote hacia solicitud de "Heavy Commercial" con "Waiver" de estacionamiento. El contrato protege el depósito de garantía ($100k) mediante la cláusula de salida ya comunicada.',
+                next: [
+                    'Resolución del Landlord sobre el estudio de tráfico y cambio de uso.',
+                    'Evaluación de ejecución de válvula de escape según respuesta.'
+                ]
+            },
+            fortworth: {
+                title: 'Fort Worth & Expansión',
+                status: 'Fase Inicial',
+                statusColor: 'bg-brand-green text-white',
+                progress: 15,
+                desc: 'Iniciaron los trabajos de preparación del sitio y movimiento de tierras. Se explora el Proyecto Monroe (Dallas) como alternativa de expansión acelerada.',
+                next: [
+                    'Continuar trámite de permisos MEP.',
+                    'Avanzar trabajos de cimentación.',
+                    'Definir esquema "Build-to-suit" para potencial sitio adicional.'
+                ]
+            }
+        };
+
+        const buttons = document.querySelectorAll('.nav-btn');
+        const pTitle = document.getElementById('panel-title');
+        const pStatus = document.getElementById('panel-status-badge');
+        const pProgText = document.getElementById('panel-progress-text');
+        const pProgBar = document.getElementById('panel-progress-bar');
+        const pDesc = document.getElementById('panel-desc');
+        const pNext = document.getElementById('panel-next');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                buttons.forEach(b => b.classList.remove('active'));
+                e.currentTarget.classList.add('active');
+
+                const siteKey = e.currentTarget.getAttribute('data-site');
+                const data = siteData[siteKey];
+
+                pTitle.textContent = data.title;
+                pStatus.textContent = data.status;
+                pStatus.className = `px-4 py-1.5 text-xs font-bold uppercase tracking-widest rounded-full ${data.statusColor}`;
+                pProgText.textContent = `${data.progress}%`;
+                pProgBar.style.width = `${data.progress}%`;
+                pDesc.textContent = data.desc;
+
+                pNext.innerHTML = '';
+                data.next.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'flex items-start';
+                    li.innerHTML = `<span class="text-brand-orange font-bold mr-3 mt-0.5">/</span> ${item}`;
+                    pNext.appendChild(li);
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('valuationChart').getContext('2d');
+
+            Chart.defaults.font.family = "'Red Hat Display', sans-serif";
+            Chart.defaults.color = '#454A60';
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Oferta Recibida', 'Valor Proyectado', 'EBITDA 2025'],
+                    datasets: [{
+                        data: [7.25, 10.0, 2.4],
+                        backgroundColor: [
+                            '#B93700',
+                            '#454A60',
+                            '#718F85'
+                        ],
+                        borderWidth: 0,
+                        borderRadius: 8,
+                        barThickness: 45
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#454A60',
+                            titleFont: { size: 14, weight: 'bold' },
+                            bodyFont: { size: 13 },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return '$' + context.parsed.y + 'M MXN';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#FFF9F3' },
+                            ticks: {
+                                font: { weight: 'bold' },
+                                callback: value => '$' + value + 'M'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
