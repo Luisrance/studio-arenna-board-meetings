@@ -1,0 +1,1559 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arenna — Board Meeting | June 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;family=Noto+Serif:ital,wght@0,400;1,500&amp;display=swap" rel="stylesheet">
+<style>
+  /* ── TOKENS ─────────────────────────────────────────────────── */
+  :root {
+    --cream:       #FFF9F3;
+    --blue:        #454A60;
+    --mint:        #B7D7C0;
+    --green:       #718F85;
+    --pink:        #ECCDBC;
+    --orange:      #ED7A42;
+    --terracotta:  #B93700;
+
+    --font-sans:   'Red Hat Display', sans-serif;
+    --font-serif:  'Noto Serif', serif;
+
+    --sidebar-w:   240px;
+    --header-h:    64px;
+    --radius:      12px;
+    --radius-sm:   8px;
+    --shadow:      0 2px 12px rgba(69,74,96,.10);
+    --shadow-md:   0 4px 24px rgba(69,74,96,.14);
+    --transition:  .25s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── RESET ───────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--cream);
+    color: var(--blue);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOP HEADER ───────────────────────────────────────────────── */
+  .top-header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: var(--header-h);
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 200;
+    box-shadow: var(--shadow-md);
+  }
+  .top-header .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .top-header .brand-name {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: .04em;
+    color: var(--cream);
+    text-transform: uppercase;
+  }
+  .top-header .brand-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--mint);
+    letter-spacing: .03em;
+  }
+  .top-header .meeting-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .top-header .meeting-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--pink);
+  }
+  .top-header .meeting-date {
+    font-size: 13px;
+    color: var(--cream);
+    opacity: .75;
+  }
+
+  /* ── SIDEBAR NAV ─────────────────────────────────────────────── */
+  .sidebar {
+    position: fixed;
+    top: var(--header-h);
+    left: 0;
+    bottom: 0;
+    width: var(--sidebar-w);
+    background: var(--blue);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 24px 0 40px;
+    border-right: 1px solid rgba(255,255,255,.07);
+  }
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 2px; }
+
+  .nav-section-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+    color: rgba(255,249,243,.35);
+    padding: 18px 20px 8px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    border-left: 3px solid transparent;
+    text-decoration: none;
+    color: rgba(255,249,243,.65);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .nav-item:hover {
+    background: rgba(255,249,243,.07);
+    color: var(--cream);
+    border-left-color: var(--mint);
+  }
+  .nav-item.active {
+    background: rgba(183,215,192,.12);
+    color: var(--cream);
+    border-left-color: var(--orange);
+    font-weight: 600;
+  }
+  .nav-item .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: currentColor;
+    opacity: .5;
+  }
+  .nav-item.active .nav-dot { opacity: 1; background: var(--orange); }
+  .nav-number {
+    font-size: 10px;
+    font-weight: 700;
+    opacity: .4;
+    min-width: 14px;
+  }
+
+  /* ── MAIN CONTENT ────────────────────────────────────────────── */
+  .main {
+    margin-left: var(--sidebar-w);
+    margin-top: var(--header-h);
+    padding: 48px 48px 80px;
+    max-width: 1100px;
+  }
+
+  /* ── HERO BLOCK ──────────────────────────────────────────────── */
+  .hero {
+    background: var(--blue);
+    border-radius: var(--radius);
+    padding: 48px 52px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(183,215,192,.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 200px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(237,122,66,.12) 0%, transparent 70%);
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .2em;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--cream);
+    line-height: 1.15;
+    margin-bottom: 10px;
+  }
+  .hero h1 em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--mint);
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,249,243,.6);
+    margin-bottom: 32px;
+    line-height: 1.6;
+    max-width: 580px;
+  }
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hero-pill {
+    background: rgba(255,249,243,.10);
+    border: 1px solid rgba(255,249,243,.15);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--cream);
+    font-weight: 500;
+  }
+  .hero-pill.highlight {
+    background: rgba(237,122,66,.20);
+    border-color: rgba(237,122,66,.35);
+    color: var(--orange);
+  }
+
+  /* ── SECTION ─────────────────────────────────────────────────── */
+  .section {
+    margin-bottom: 40px;
+    scroll-margin-top: calc(var(--header-h) + 24px);
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--mint);
+    cursor: pointer;
+    user-select: none;
+  }
+  .section-number {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .15em;
+    color: var(--orange);
+    opacity: .8;
+    min-width: 28px;
+  }
+  .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--blue);
+    flex: 1;
+  }
+  .section-title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--green);
+    margin-left: 8px;
+  }
+  .section-toggle {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--mint);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--blue);
+    flex-shrink: 0;
+    transition: transform var(--transition), background var(--transition);
+  }
+  .section.collapsed .section-toggle { transform: rotate(-90deg); background: var(--pink); }
+  .section-body { transition: opacity .2s; }
+  .section.collapsed .section-body { display: none; }
+
+  /* ── CARDS ───────────────────────────────────────────────────── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(69,74,96,.08);
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .card-desc {
+    font-size: 12px;
+    color: rgba(69,74,96,.6);
+    line-height: 1.5;
+  }
+  .card.accent-orange { border-top: 3px solid var(--orange); }
+  .card.accent-mint   { border-top: 3px solid var(--mint); }
+  .card.accent-pink   { border-top: 3px solid var(--pink); }
+  .card.accent-terra  { border-top: 3px solid var(--terracotta); }
+  .card.accent-green  { border-top: 3px solid var(--green); }
+
+  /* ── CALLOUT BOXES ────────────────────────────────────────────── */
+  .callout {
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .callout-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .callout-body {}
+  .callout-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    margin-bottom: 5px;
+  }
+  .callout-text {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .callout.key-update    { background: rgba(183,215,192,.25); border-left: 3px solid var(--green); }
+  .callout.key-update .callout-title { color: var(--green); }
+  .callout.next-steps    { background: rgba(237,122,66,.10); border-left: 3px solid var(--orange); }
+  .callout.next-steps .callout-title { color: var(--orange); }
+  .callout.risks         { background: rgba(185,55,0,.08);   border-left: 3px solid var(--terracotta); }
+  .callout.risks .callout-title { color: var(--terracotta); }
+  .callout.board-decision{ background: rgba(69,74,96,.07);   border-left: 3px solid var(--blue); }
+  .callout.board-decision .callout-title { color: var(--blue); }
+
+  /* ── PROGRESS TRACKER ────────────────────────────────────────── */
+  .progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .progress-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .progress-label {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 160px;
+    color: var(--blue);
+  }
+  .progress-bar-wrap {
+    flex: 1;
+    height: 8px;
+    background: rgba(69,74,96,.10);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+    background: var(--mint);
+  }
+  .progress-bar.orange { background: var(--orange); }
+  .progress-bar.green  { background: var(--green); }
+  .progress-pct {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue);
+    min-width: 36px;
+    text-align: right;
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    white-space: nowrap;
+  }
+  .status-badge.ready    { background: rgba(183,215,192,.3); color: var(--green); }
+  .status-badge.active   { background: rgba(237,122,66,.15); color: var(--orange); }
+  .status-badge.pending  { background: rgba(69,74,96,.10);   color: var(--blue); opacity: .7; }
+  .status-badge.risk     { background: rgba(185,55,0,.10);   color: var(--terracotta); }
+
+  /* ── INSPECTION CHECKLIST ────────────────────────────────────── */
+  .checklist {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .check-item {
+    background: white;
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    border: 1.5px solid var(--mint);
+    transition: border-color var(--transition);
+  }
+  .check-item.done {
+    border-color: var(--green);
+    background: rgba(183,215,192,.12);
+  }
+  .check-item .check-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+    background: var(--mint);
+    color: var(--blue);
+  }
+  .check-item.done .check-icon { background: var(--green); color: white; }
+  .check-item.pending-check .check-icon { background: rgba(237,122,66,.2); color: var(--orange); }
+
+  /* ── FINANCIAL TABLE ─────────────────────────────────────────── */
+  .fin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 20px;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .fin-table thead tr {
+    background: var(--blue);
+    color: var(--cream);
+  }
+  .fin-table th {
+    padding: 12px 16px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    text-align: left;
+  }
+  .fin-table td {
+    padding: 11px 16px;
+    border-bottom: 1px solid rgba(69,74,96,.06);
+    color: var(--blue);
+  }
+  .fin-table tbody tr:last-child td { border-bottom: none; }
+  .fin-table tbody tr:hover { background: rgba(183,215,192,.1); }
+  .fin-table .highlight-row { background: rgba(237,122,66,.08); font-weight: 600; }
+  .fin-table .total-row { background: rgba(69,74,96,.05); font-weight: 700; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tag-positive { color: var(--green); font-weight: 700; font-size: 11px; }
+  .tag-neutral  { color: var(--orange); font-weight: 700; font-size: 11px; }
+
+  /* ── DIVIDER ─────────────────────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--mint), transparent);
+    margin: 24px 0;
+  }
+
+  /* ── PROSE ───────────────────────────────────────────────────── */
+  .prose {
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgba(69,74,96,.85);
+    max-width: 760px;
+    margin-bottom: 20px;
+  }
+  .prose strong { color: var(--blue); font-weight: 700; }
+
+  /* ── TWO-COL LAYOUT ───────────────────────────────────────────── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+  /* ── TIMELINE ────────────────────────────────────────────────── */
+  .timeline { position: relative; padding-left: 28px; margin-bottom: 20px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--mint), var(--pink));
+  }
+  .timeline-item {
+    position: relative;
+    padding: 0 0 20px 20px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -22px; top: 5px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--mint);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--mint);
+  }
+  .timeline-item.active::before { background: var(--orange); box-shadow: 0 0 0 2px var(--orange); }
+  .timeline-date {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--orange);
+    margin-bottom: 4px;
+  }
+  .timeline-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 4px;
+  }
+  .timeline-desc {
+    font-size: 13px;
+    color: rgba(69,74,96,.7);
+    line-height: 1.55;
+  }
+
+  /* ── PLACEHOLDER IMAGE ────────────────────────────────────────── */
+  .img-placeholder {
+    background: rgba(69,74,96,.05);
+    border: 2px dashed rgba(69,74,96,.2);
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 40px;
+    color: rgba(69,74,96,.4);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .img-placeholder span { font-size: 28px; }
+
+  /* ── RESPONSIVE ──────────────────────────────────────────────── */
+  @media (max-width: 900px) {
+    .sidebar { width: 200px; }
+    .main { margin-left: 200px; padding: 32px 24px 60px; }
+    .two-col, .three-col { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 80px 16px 60px; }
+  }
+
+  /* ── FORMAL PALETTE OVERRIDES ──────────────────────────────── */
+  /* Shift from colorful accents to blue/cream */
+
+  .section-header { border-bottom: 2px solid rgba(69,74,96,.18); }
+  .section-number { color: rgba(69,74,96,.4); }
+  .section-toggle { background: rgba(69,74,96,.12); color: var(--blue); }
+  .section.collapsed .section-toggle { background: rgba(69,74,96,.08); }
+
+  .callout.key-update    { background: rgba(69,74,96,.05); border-left: 3px solid var(--blue); }
+  .callout.key-update .callout-title { color: var(--blue); }
+  .callout.next-steps    { background: rgba(69,74,96,.03); border-left: 3px solid rgba(69,74,96,.4); }
+  .callout.next-steps .callout-title { color: rgba(69,74,96,.65); }
+  .callout.risks         { background: rgba(69,74,96,.04); border-left: 3px solid rgba(185,55,0,.55); }
+  .callout.board-decision{ background: rgba(69,74,96,.06); border-left: 3px solid var(--blue); }
+
+  .card.accent-mint, .card.accent-green, .card.accent-orange,
+  .card.accent-pink, .card.accent-terra { border-top: 2px solid rgba(69,74,96,.2); }
+  .card-label { color: rgba(69,74,96,.5); }
+
+  .progress-bar { background: var(--blue); opacity: .45; }
+  .progress-bar.orange { background: var(--blue); opacity: .7; }
+  .progress-bar.green  { background: var(--blue); opacity: .9; }
+
+  .status-badge.ready   { background: rgba(69,74,96,.10); color: var(--blue); }
+  .status-badge.active  { background: rgba(69,74,96,.15); color: var(--blue); font-weight:700; }
+  .status-badge.pending { background: rgba(69,74,96,.06); color: rgba(69,74,96,.5); }
+  .status-badge.risk    { background: rgba(185,55,0,.08); color: var(--terracotta); }
+
+  .check-item           { border: 1.5px solid rgba(69,74,96,.18); }
+  .check-item .check-icon { background: rgba(69,74,96,.1); color: var(--blue); }
+  .check-item.done      { border-color: rgba(69,74,96,.35); background: rgba(69,74,96,.04); }
+  .check-item.done .check-icon { background: var(--blue); color: var(--cream); }
+  .check-item.pending-check .check-icon { background: rgba(69,74,96,.12); color: var(--blue); }
+
+  .timeline::before { background: linear-gradient(to bottom, rgba(69,74,96,.25), rgba(69,74,96,.08)); }
+  .timeline-item::before { background: rgba(69,74,96,.35); box-shadow: 0 0 0 2px rgba(69,74,96,.15); border: 2px solid white; }
+  .timeline-item.active::before { background: var(--blue); box-shadow: 0 0 0 2px rgba(69,74,96,.25); }
+  .timeline-date { color: rgba(69,74,96,.6); }
+
+  .hero-eyebrow { color: rgba(255,249,243,.65); }
+  .hero-pill.highlight { background: rgba(255,249,243,.15); border-color: rgba(255,249,243,.25); color: var(--cream); }
+
+  .nav-item:hover  { border-left-color: rgba(255,249,243,.45); }
+  .nav-item.active { background: rgba(255,249,243,.1); border-left-color: var(--cream); }
+  .nav-item.active .nav-dot { background: var(--cream); }
+
+  .fin-table thead tr { background: var(--blue); }
+  .fin-table tbody tr:hover { background: rgba(69,74,96,.04); }
+  .fin-table .highlight-row { background: rgba(69,74,96,.05); }
+  .fin-table .total-row { background: rgba(69,74,96,.08); }
+  .tag-positive { color: var(--blue); }
+  .tag-neutral  { color: rgba(69,74,96,.6); }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP HEADER ═══════════════════════════════════════════════ -->
+<header class="top-header">
+  <div class="brand">
+    <span class="brand-name">Arenna</span>
+    <span class="brand-sub">Board Meeting</span>
+  </div>
+  <div class="meeting-meta">
+    <span class="meeting-label">May 2026 Report</span>
+    <span class="meeting-date">June 8, 2026</span>
+  </div>
+</header>
+
+<!-- ═══ SIDEBAR ══════════════════════════════════════════════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section-label">Navigation</div>
+  <a class="nav-item" href="#s1" onclick="setActive(this)">
+    <span class="nav-number">01</span>
+    <span class="nav-dot"></span>
+    Corporate Matters
+  </a>
+  <a class="nav-item active" href="#s2" onclick="setActive(this)">
+    <span class="nav-number">02</span>
+    <span class="nav-dot"></span>
+    Denver, CO
+  </a>
+  <a class="nav-item" href="#s5" onclick="setActive(this)">
+    <span class="nav-number">03</span>
+    <span class="nav-dot"></span>
+    Fort Worth, TX
+  </a>
+  <a class="nav-item" href="#s6" onclick="setActive(this)">
+    <span class="nav-number">04</span>
+    <span class="nav-dot"></span>
+    Dallas, TX
+  </a>
+  <a class="nav-item" href="#s7" onclick="setActive(this)">
+    <span class="nav-number">05</span>
+    <span class="nav-dot"></span>
+    20×10
+  </a>
+  <a class="nav-item" href="#s8" onclick="setActive(this)">
+    <span class="nav-number">06</span>
+    <span class="nav-dot"></span>
+    Cash Flow
+  </a>
+</nav>
+
+<!-- ═══ MAIN ══════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Board Meeting — June 2026</div>
+    <h1>May 2026<br><em>Monthly Operations Report</em></h1>
+    <p class="hero-sub">
+      Denver reaches inspection-ready status across all critical systems. Fort Worth refines its construction approach.
+      Dallas emerges as a compelling new market with a build-to-suit deal in progress.
+    </p>
+    <div class="hero-pills">
+      <span class="hero-pill highlight">Denver: Inspection Week</span>
+      <span class="hero-pill">Fort Worth: Strategy Update</span>
+      <span class="hero-pill">Dallas: New Deal</span>
+      <span class="hero-pill">Marketing: Live</span>
+      <span class="hero-pill">F&amp;B: Partnership Secured</span>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- 01 · CORPORATE MATTERS -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="s1">
+    <div class="section-header" onclick="toggleSection('s1')">
+      <span class="section-number">01</span>
+      <h2 class="section-title">Corporate Matters <em>Overview</em></h2>
+      <div class="section-toggle">▾</div>
+    </div>
+    <div class="section-body">
+      <div class="cards three-col">
+        
+        
+        <div class="card accent-green">
+          <div class="card-label">Report Period</div>
+          <div class="card-value">May '26</div>
+          <div class="card-desc">Reporting period: May 1 – May 31, 2026</div>
+        </div>
+      </div>
+
+      <div class="callout key-update">
+        <div class="callout-icon">✈</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Leadership on the Ground</div>
+          <div class="callout-text">
+            <strong>Luis is now fully relocated to Denver</strong> and is directly overseeing day-to-day operations on the ground. This marks a significant step in operational readiness — with leadership physically present, the team is well-positioned to navigate the inspection process, the soft launch, and the initial weeks of commercial operations with full executive attention.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout board-decision">
+        <div class="callout-icon">🏛</div>
+        <div class="callout-body">
+          <div class="callout-title">Board Visibility</div>
+          <div class="callout-text">
+            This session covers six topics: Corporate Matters, Denver, Fort Worth, Dallas, 20×10, and Cash Flow.
+            The most material items this cycle are <strong>Denver's imminent Certificate of Occupancy process</strong>, the <strong>Dallas build-to-suit deal structure</strong>, and the <strong>20×10 lease renewal negotiation</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- 02 · DENVER -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="s2">
+    <div class="section-header" onclick="toggleSection('s2')">
+      <span class="section-number">02</span>
+      <h2 class="section-title">Denver, Colorado <em>Inspection Ready</em></h2>
+      <div class="section-toggle">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="callout key-update">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Construction Complete</div>
+          <div class="callout-text">
+            All three critical MEP systems are fully installed and ready: <strong>HVAC / Ventilation, Electrical, and Plumbing.</strong>
+            The facility is inspection-ready as of this week. All five city inspections are scheduled for the current week of June 8, 2026.
+          </div>
+        </div>
+      </div>
+
+      <!-- Systems status -->
+      <div class="progress-list">
+        <div class="progress-item">
+          <span class="progress-label">Ventilation (HVAC)</span>
+          <div class="progress-bar-wrap"><div class="progress-bar green" style="width: 100%;"></div></div>
+          <span class="progress-pct">100%</span>
+          <span class="status-badge ready">Ready</span>
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">Electrical</span>
+          <div class="progress-bar-wrap"><div class="progress-bar green" style="width: 100%;"></div></div>
+          <span class="progress-pct">100%</span>
+          <span class="status-badge ready">Ready</span>
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">Plumbing</span>
+          <div class="progress-bar-wrap"><div class="progress-bar green" style="width: 100%;"></div></div>
+          <span class="progress-pct">100%</span>
+          <span class="status-badge ready">Ready</span>
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">City Inspections</span>
+          <div class="progress-bar-wrap"><div class="progress-bar orange" style="width: 10%;"></div></div>
+          <span class="progress-pct">—</span>
+          <span class="status-badge active">This Week</span>
+        </div>
+        <div class="progress-item">
+          <span class="progress-label">Certificate of Occupancy</span>
+          <div class="progress-bar-wrap"><div class="progress-bar" style="width: 5%;"></div></div>
+          <span class="progress-pct">—</span>
+          <span class="status-badge pending">Pending</span>
+        </div>
+      </div>
+
+      <!-- Inspections checklist -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:14px;text-transform:uppercase;letter-spacing:.1em;">Scheduled Inspections — Week of June 8</h3>
+      <div class="checklist">
+        <div class="check-item pending-check">
+          <div class="check-icon">⚡</div>
+          Electrical
+        </div>
+        <div class="check-item pending-check">
+          <div class="check-icon">🌀</div>
+          Ventilation
+        </div>
+        <div class="check-item pending-check">
+          <div class="check-icon">🔧</div>
+          Plumbing
+        </div>
+        <div class="check-item pending-check">
+          <div class="check-icon">🔥</div>
+          Fire / Life Safety
+        </div>
+        <div class="check-item pending-check">
+          <div class="check-icon">🏛</div>
+          General / Building
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Inspection process expectations -->
+      <div class="timeline">
+        <div class="timeline-item active">
+          <div class="timeline-date">Week of June 8, 2026</div>
+          <div class="timeline-title">All Five Inspections Submitted</div>
+          <div class="timeline-desc">City inspectors visit for Electrical, Ventilation, Plumbing, Fire, and General Building. Inspectors typically request minor corrections on initial pass.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">If Corrections Required</div>
+          <div class="timeline-title">Rapid Remediation</div>
+          <div class="timeline-desc">Any requested corrections will be addressed immediately. The expectation is minimal scope — few items — allowing a fast turnaround and re-inspection scheduling.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">Imminent — Target: June 2026</div>
+          <div class="timeline-title">Certificate of Occupancy Issued</div>
+          <div class="timeline-desc">Upon passing all inspections, the City issues the Certificate of Occupancy, unlocking commercial operations and revenue collection.</div>
+        </div>
+      </div>
+
+      <div class="callout risks">
+        <div class="callout-icon">⚠</div>
+        <div class="callout-body">
+          <div class="callout-title">Risk — Inspection Correction Rounds</div>
+          <div class="callout-text">
+            It is standard for city inspectors to request one or two changes. The team is prepared to act quickly.
+            The primary risk is a multi-round correction cycle that could push the Certificate of Occupancy by 2–3 weeks.
+            Mitigation: all systems are fully installed and verified internally before submission.
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Marketing -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em;">Marketing — Community Activation</h3>
+
+      <div class="callout key-update">
+        <div class="callout-icon">📣</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Digital &amp; On-Ground Marketing Live</div>
+          <div class="callout-text">
+            Content is actively being published and community engagement has begun. The team has been approaching racket sports communities across Denver — tennis players of all ages and skill levels — inviting them to experience the club firsthand.
+            The response has been <strong>strongly positive</strong>, both on the physical infrastructure (6 indoor courts with high ceilings) and on the intangible atmosphere — the "vibe" members feel upon entering.
+          </div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card accent-mint">
+          <div class="card-label">Indoor Courts</div>
+          <div class="card-value">6</div>
+          <div class="card-desc">Full-height ceilings, premium surface — central to the Denver facility experience</div>
+        </div>
+        <div class="card accent-green">
+          <div class="card-label">Community Reach</div>
+          <div class="card-value">Active</div>
+          <div class="card-desc">Engaging tennis &amp; racket sport communities across multiple demographics and age groups</div>
+        </div>
+        <div class="card accent-orange">
+          <div class="card-label">Member Feedback</div>
+          <div class="card-value">Positive</div>
+          <div class="card-desc">Strong response on both physical infrastructure and overall club atmosphere</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- F&B -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em;">Food &amp; Beverage — Local Partnership</h3>
+
+      <div class="callout key-update">
+        <div class="callout-icon">☕</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — F&amp;B Partnership Secured</div>
+          <div class="callout-text">
+            Arenna Denver has entered into a wholesale partnership with a well-known local café. The operational model mirrors their existing multi-location structure: food is prepared centrally in their commissary kitchen, delivered to Arenna, and requires only freezing and reheating on-site — minimizing operational complexity and staffing overhead.
+            The partner will also <strong>train Arenna staff</strong> on coffee and beverage service standards, and will assist in securing the necessary food and beverage permits for the Denver facility.
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card accent-mint">
+          <div class="card-label">F&amp;B Model</div>
+          <div class="card-value" style="font-size:18px;">Commissary</div>
+          <div class="card-desc">Central kitchen preparation, delivery to club, on-site heat-and-serve. Mirrors partner's existing multi-location model.</div>
+        </div>
+        <div class="card accent-green">
+          <div class="card-label">Operational Benefits</div>
+          <div class="card-value" style="font-size:18px;">Low Complexity</div>
+          <div class="card-desc">No on-site cooking. Partner handles permits, training, and quality standards. Arenna staff trained on coffee and service protocols.</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Systems & Tech -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em;">Systems &amp; Technology</h3>
+
+      <div class="callout key-update">
+        <div class="callout-icon">💳</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Booking &amp; Payment Ready</div>
+          <div class="callout-text">
+            The club management and booking system is fully configured and integrated with payment platforms. The system is ready to begin processing payments and member transactions the moment the Certificate of Occupancy is received.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout next-steps">
+        <div class="callout-icon">→</div>
+        <div class="callout-body">
+          <div class="callout-title">Next Steps — Denver</div>
+          <div class="callout-text">
+            (1) Complete all five city inspections this week. (2) Address any requested corrections immediately and schedule re-inspection. (3) Obtain Certificate of Occupancy. (4) Activate payment system and begin commercial operations. (5) Execute soft-launch with pre-engaged community members.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- 05 · FORT WORTH -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="s5">
+    <div class="section-header" onclick="toggleSection('s5')">
+      <span class="section-number">05</span>
+      <h2 class="section-title">Fort Worth, Texas <em>Strategy Update</em></h2>
+      <div class="section-toggle">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="callout key-update">
+        <div class="callout-icon">🏗</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Construction Approach Revised</div>
+          <div class="callout-text">
+            Following a thorough review of the permitting process with the landlord, and informed by lessons learned from the Denver buildout, the team has concluded that — given Fort Worth's <strong>build-to-suit</strong> nature — integrating MEP amenities (plumbing, electrical, ventilation) directly into the new construction yields a better outcome: <strong>lower cost, greater efficiency, and a cleaner final build.</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card accent-mint">
+          <div class="card-label">Previous Approach</div>
+          <div class="card-value" style="font-size:16px;">Modular Units</div>
+          <div class="card-desc">Prefabricated modular MEP installations. Greater complexity in integrating plumbing, electrical, and ventilation into an existing or partial structure.</div>
+        </div>
+        <div class="card accent-orange">
+          <div class="card-label">Revised Approach</div>
+          <div class="card-value" style="font-size:16px;">Built-in-Place</div>
+          <div class="card-desc">MEP systems designed and installed from the ground up as part of new construction. More cost-efficient and structurally cleaner for a build-to-suit project.</div>
+        </div>
+      </div>
+
+      <div class="prose">
+        Since Fort Worth is a <strong>build-to-suit development</strong>, the complexity of retrofitting modular MEP systems is unnecessary. Building these systems in-place from the start is the standard approach for new construction — delivering a cleaner, more cost-efficient result from the outset.
+      </div>
+
+      <div class="callout next-steps">
+        <div class="callout-icon">→</div>
+        <div class="callout-body">
+          <div class="callout-title">Next Steps — Fort Worth</div>
+          <div class="callout-text">
+            Advance construction planning with landlord and contractor using the built-in-place MEP strategy. Align on permit submission timeline and project schedule.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- 06 · DALLAS -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="s6">
+    <div class="section-header" onclick="toggleSection('s6')">
+      <span class="section-number">06</span>
+      <h2 class="section-title">Dallas, Texas <em>New Market</em></h2>
+      <div class="section-toggle">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="callout key-update">
+        <div class="callout-icon">⭐</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Dallas Emerges as Priority Texas Market</div>
+          <div class="callout-text">
+            Dallas has been identified as an alternative to Austin and is now the primary Texas expansion focus. Material progress has been made with both the <strong>landlord</strong> and the <strong>general contractor</strong> on deal structure, budget, and design direction. Architects and engineers are being brought into the process.
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em;">Deal Structure — Build-to-Suit Financing</h3>
+
+      <div class="prose">
+        The transaction is a <strong>landlord-financed build-to-suit</strong> at <strong>9910 Monroe Drive, Dallas TX 75220</strong>. The landlord (RAS Services, Inc. / Reynaldo Arizmendi) will finance construction of an approximately <strong>23,000 SF</strong> facility — comprising <strong>6 padel courts</strong></div>
+
+      <!-- Term Sheet Summary -->
+      
+
+      
+
+      <!-- Financial analysis -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:16px;margin-top:24px;text-transform:uppercase;letter-spacing:.1em;">Financial Analysis — Rent Economics</h3>
+
+      <div class="prose">
+        Arenna's base rent mirrors the landlord's annual debt service on the <strong>$2,000,000</strong> construction loan. Total annual debt cost is estimated at approximately <strong>~$306,000/year</strong> — which on the 23,000 SF building translates to roughly <strong>~$13.4/sqft/year</strong> in base rent. On top of that, Arenna covers Triple Net (NNN) expenses: property maintenance, property insurance, and property taxes.
+      </div>
+
+      <div class="cards">
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Property / Courts</div>
+          <div class="card-value">23,000 SF</div>
+          <div class="card-desc">5 padel courts + 3 pickleball courts · 9910 Monroe Drive, Dallas TX</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Construction Loan</div>
+          <div class="card-value">$2,000,000</div>
+          <div class="card-desc">Landlord-financed · Susser Bank · Personal guaranty from Reynaldo Arizmendi</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Annual Debt Cost</div>
+          <div class="card-value">~$306,000</div>
+          <div class="card-desc">Estimated annual cost of debt — equals Arenna's base rent obligation to the landlord</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Base Rent / Sq Ft</div>
+          <div class="card-value">~$13.40 / sqft</div>
+          <div class="card-desc">$306K ÷ 23,000 SF per year. Annual base rent per square foot.</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">NNN (est.)</div>
+          <div class="card-value">$3.50–$5.50</div>
+          <div class="card-desc">Per sqft/year. Property maintenance, insurance, and taxes.</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Total Occupancy Cost</div>
+          <div class="card-value">$16.90–$18.90</div>
+          <div class="card-desc">Per sqft/year all-in (base + NNN). At or below Preston Hollow market low end.</div>
+        </div>
+      </div>
+
+      <!-- Market comparison -->
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:14px;text-transform:uppercase;letter-spacing:.1em;">Market Comparison — Dallas Industrial / Flex (Near Preston Hollow)</h3>
+
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>This Deal</th>
+            <th>Market Range (Preston Hollow Area)</th>
+            <th>Assessment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td>Base Rent (per sq ft / yr)</td>
+            <td class="num">~$13.40</td>
+            <td class="num">$14.00 – $20.00</td>
+            <td><span class="tag-positive">Below Market</span></td>
+          </tr>
+          <tr>
+            <td>NNN Expenses (est.)</td>
+            <td class="num">$3.50 – $5.50</td>
+            <td class="num">$3.00 – $6.00</td>
+            <td><span class="tag-positive">In Line</span></td>
+          </tr>
+          <tr>
+            <td>Total Occupancy Cost</td>
+            <td class="num">$16.90 – $18.90</td>
+            <td class="num">$17.00 – $26.00</td>
+            <td><span class="tag-positive">Favorable</span></td>
+          </tr>
+          <tr>
+            <td>Property Size</td>
+            <td class="num">23,000 sq ft</td>
+            <td class="num">Varies</td>
+            <td><span class="tag-neutral">Purpose-Built for Arenna</span></td>
+          </tr>
+          <tr class="total-row">
+            <td>Annual Rent Obligation (base)</td>
+            <td class="num">~$306,000</td>
+            <td class="num">$322,000 – $460,000+</td>
+            <td><span class="tag-positive">Highly Favorable</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="prose">
+        Preston Hollow is a premium submarket in North Dallas — a high-income residential and mixed-use corridor where industrial and flex space typically asks $14–$20/sqft NNN. This deal's base rent of <strong>~$13.4/sqft</strong> is anchored to the landlord's $2M debt service, not to market comparables. The all-in of <strong>$16.90–$18.90/sqft</strong> comes in at or below the low end of the Preston Hollow market range.
+      </div>
+
+      <div class="two-col">
+        <div class="callout key-update">
+          <div class="callout-icon">💰</div>
+          <div class="callout-body">
+            <div class="callout-title">Deal Advantage</div>
+            <div class="callout-text">
+              The landlord absorbs full construction and financing risk. Arenna's rent is anchored to a $2M loan — not to market rates — on a purpose-built facility. At ~$13.9/sqft base versus a $14–$20/sqft market, the deal creates meaningful structural savings from day one.
+            </div>
+          </div>
+        </div>
+        <div class="callout risks">
+          <div class="callout-icon">⚠</div>
+          <div class="callout-body">
+            <div class="callout-title">Risk — Floating Rate &amp; Balloon Maturity</div>
+            <div class="callout-text">
+              The floating rate introduces variability in the ~$306K annual estimate. 
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout next-steps">
+        <div class="callout-icon">→</div>
+        <div class="callout-body">
+          <div class="callout-title">Next Steps — Dallas</div>
+          <div class="callout-text">
+            (1) Formalize lease agreement — confirm rent-to-debt-service mechanism and address balloon maturity protections. (2) Engage architects and engineers for the 6-padel court buildout. (3) Align design with Arenna brand standards. (4) Establish permitting and construction timeline (~14 months to occupancy). (5) Board approval on deal structure if required.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout board-decision">
+        <div class="callout-icon">🏛</div>
+        <div class="callout-body">
+          <div class="callout-title">Board Decision — Dallas Deal</div>
+          <div class="callout-text">
+            The Dallas build-to-suit structure delivers a purpose-built 23,000 SF facility at ~$13.4/sqft base rent — all-in $16.90–$18.90/sqft including NNN — versus $17–$26/sqft market. The economics are structurally favorable. <strong>Board input needed:</strong> Approval of deal structure and authorization to advance to formal lease agreement.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- 07 · 20×10 -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="s7">
+    <div class="section-header" onclick="toggleSection('s7')">
+      <span class="section-number">07</span>
+      <h2 class="section-title">20×10 <em>Initiative</em></h2>
+      <div class="section-toggle">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="callout key-update">
+        <div class="callout-icon">📋</div>
+        <div class="callout-body">
+          <div class="callout-title">Key Update — Lease Renewal Meeting Finally Held</div>
+          <div class="callout-text">
+            After a prolonged period of delays by the Lienzo and Charro boards, the long-awaited lease renewal discussion took place at the end of May 2026. The meeting was an important step — though the initial position put forward by the Lienzo board fell well outside reasonable parameters.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout risks">
+        <div class="callout-icon">⚠</div>
+        <div class="callout-body">
+          <div class="callout-title">Risk — Lienzo's Initial Proposal: Rent Doubling</div>
+          <div class="callout-text">
+            The Lienzo board's opening position was a <strong>100% rent increase</strong> — effectively doubling the current rent. This proposal was immediately rejected by the current owners, who made clear that such an increase would make the economics unworkable and would leave them with no alternative but to <strong>not renew and remove their infrastructure</strong> from the property. The proposal was deemed untenable by all parties with a stake in continuity.
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3 style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:16px;text-transform:uppercase;letter-spacing:.1em;">Counter-Proposal — Renewal Letter Sent Today</h3>
+
+      <div class="callout next-steps">
+        <div class="callout-icon">✉</div>
+        <div class="callout-body">
+          <div class="callout-title">Next Steps — Renewal Letter Submitted June 8, 2026</div>
+          <div class="callout-text">
+            As of today, a formal lease renewal request letter has been submitted with the following terms: a <strong>10% rent increase in Year 1</strong>, followed by <strong>CPI-linked (inflation) increases in subsequent years</strong>. This is a fair, market-aligned offer that preserves the relationship and the operational continuity of the 20×10 business. The board will be kept informed of any response or counter-proposal that follows.
+          </div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card accent-terra">
+          <div class="card-label">Lienzo Opening Ask</div>
+          <div class="card-value">+100%</div>
+          <div class="card-desc">Proposed rent doubling. Rejected outright — would render unit economics nonviable.</div>
+        </div>
+        <div class="card accent-orange">
+          <div class="card-label">Our Counter — Year 1</div>
+          <div class="card-value">+10%</div>
+          <div class="card-desc">Reasonable first-year increase. Submitted today via formal renewal request letter.</div>
+        </div>
+        <div class="card accent-mint">
+          <div class="card-label">Subsequent Years</div>
+          <div class="card-value">CPI</div>
+          <div class="card-desc">Annual rent adjustments tied to inflation — standard, predictable, and fair to both parties.</div>
+        </div>
+      </div>
+
+      <div class="callout board-decision">
+        <div class="callout-icon">🏛</div>
+        <div class="callout-body">
+          <div class="callout-title">Board Visibility</div>
+          <div class="callout-text">
+            Management has submitted the renewal letter as of June 8, 2026. The board will be kept fully informed of developments following Lienzo's response. No board action is required at this time. If Lienzo rejects the counter and escalates, management will return to the board with a recommended path forward — including the option of non-renewal and infrastructure removal if necessary.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <!-- 08 · CASH FLOW -->
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="s8">
+    <div class="section-header" onclick="toggleSection('s8')">
+      <span class="section-number">08</span>
+      <h2 class="section-title">Cash Flow <em>Financial Overview</em></h2>
+      <div class="section-toggle">▾</div>
+    </div>
+    <div class="section-body">
+
+      <div class="callout board-decision">
+        <div class="callout-icon">📋</div>
+        <div class="callout-body">
+          <div class="callout-title">Board Visibility — Actuals vs. Projections</div>
+          <div class="callout-text">
+            All figures in USD thousands ($000s). <strong>Shaded columns = Actual</strong> (November 2025 through May 2026). Unshaded columns = Projections (June 2026 onwards). Revenue contributions begin in Q4 2026 as Denver and 20×10 come online.
+          </div>
+        </div>
+      </div>
+
+      <div class="cards three-col" style="margin-bottom:28px;">
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Cash on Hand — May 2026 (Actual)</div>
+          <div class="card-value">$1,323.6K</div>
+          <div class="card-desc">End-of-period cash as of May 31, 2026.</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Next Equity Round (Projected)</div>
+          <div class="card-value">$1,200K</div>
+          <div class="card-desc">August 2026 — critical to fund construction capex through late 2026.</div>
+        </div>
+        <div class="card" style="border-top:2px solid rgba(69,74,96,.2);">
+          <div class="card-label">Projected Year-End Cash (Dec 2026)</div>
+          <div class="card-value">$1,015.7K</div>
+          <div class="card-desc">End-of-period cash projected for December 2026.</div>
+        </div>
+      </div>
+
+      <!-- INTEGRATED CASH FLOW TABLE -->
+      <div style="overflow-x:auto;margin-bottom:8px;">
+      <table class="fin-table" style="min-width:1100px;font-size:11.5px;">
+        <thead>
+          <tr>
+            <th style="min-width:160px;">Line Item</th>
+            <!-- ACTUALS -->
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">Nov-25</th>
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">Dec-25</th>
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">Jan-26</th>
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">Feb-26</th>
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">Mar-26</th>
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">Apr-26</th>
+            <th style="background:rgba(255,249,243,.18);color:rgba(255,249,243,.85);font-size:10px;">May-26</th>
+            <!-- PROJECTIONS -->
+            <th style="font-size:10px;">Jun-26</th><th style="font-size:10px;">Jul-26</th><th style="font-size:10px;">Aug-26</th><th style="font-size:10px;">Sep-26</th><th style="font-size:10px;">Oct-26</th>
+            <th style="font-size:10px;">Nov-26</th><th style="font-size:10px;">Dec-26</th>
+            <th style="font-size:10px;">Jan-27</th><th style="font-size:10px;">Feb-27</th><th style="font-size:10px;">Mar-27</th><th style="font-size:10px;">Apr-27</th><th style="font-size:10px;">May-27</th>
+            <th style="font-size:10px;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- ── CLUB EARNINGS ── -->
+          <tr style="background:rgba(69,74,96,.08);">
+            <td colspan="21" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);padding:8px 16px;">Club-Level Earnings</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Denver</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">4.0</td><td class="num">7.2</td><td class="num">10.2</td><td class="num">14.7</td><td class="num">11.3</td><td class="num">15.6</td><td class="num">16.0</td><td class="num">19.7</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">98.7</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Parker</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">5.6</td><td class="num">18.0</td><td class="num">22.3</td><td class="num">23.7</td><td class="num">27.3</td><td class="num">15.8</td><td class="num">18.8</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">131.6</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Fort Worth</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">25.7</td><td class="num">53.9</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">79.5</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Dallas</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">5.9</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">5.9</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">20×10</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">11.6</td><td class="num">11.6</td><td class="num">11.6</td><td class="num">11.6</td><td class="num">11.6</td><td class="num">11.6</td><td class="num">11.6</td><td class="num">11.6</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">104.0</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>(+) Total Earnings</strong></td>
+            <td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td>
+            <td class="num"><strong>—</strong></td><td class="num"><strong>—</strong></td><td class="num"><strong>—</strong></td><td class="num"><strong>—</strong></td><td class="num"><strong>15.6</strong></td><td class="num"><strong>24.4</strong></td><td class="num"><strong>39.7</strong></td><td class="num"><strong>48.5</strong></td><td class="num"><strong>46.6</strong></td><td class="num"><strong>54.5</strong></td><td class="num"><strong>69.0</strong></td><td class="num"><strong>109.9</strong></td>
+            <td class="num" style="background:rgba(69,74,96,.1);"><strong>419.8</strong></td>
+          </tr>
+
+          <!-- ── CORPORATE ── -->
+          <tr style="background:rgba(69,74,96,.08);">
+            <td colspan="21" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);padding:8px 16px;">Corporate</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Referral Fees</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">(15.0)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">(7.5)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">(21.6)</td><td class="num">—</td><td class="num">(31.8)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(75.9)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Setup / Legal</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">(5.0)</td><td style="background:rgba(69,74,96,.04);" class="num">(0.7)</td><td style="background:rgba(69,74,96,.04);" class="num">(14.7)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(20.3)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Recurring Corporate</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">(17.7)</td><td style="background:rgba(69,74,96,.04);" class="num">(17.6)</td><td style="background:rgba(69,74,96,.04);" class="num">(19.3)</td><td style="background:rgba(69,74,96,.04);" class="num">(19.5)</td><td style="background:rgba(69,74,96,.04);" class="num">(18.8)</td><td style="background:rgba(69,74,96,.04);" class="num">(20.5)</td>
+            <td class="num">(25.2)</td><td class="num">(26.6)</td><td class="num">(26.1)</td><td class="num">(26.1)</td><td class="num">(26.1)</td><td class="num">(26.1)</td><td class="num">(26.1)</td><td class="num">(33.7)</td><td class="num">(33.7)</td><td class="num">(33.7)</td><td class="num">(33.7)</td><td class="num">(33.7)</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(464.6)</td>
+          </tr>
+          <tr class="total-row">
+            <td><strong>(-) Total Corporate</strong></td>
+            <td style="background:rgba(69,74,96,.08);" class="num"><strong>—</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>(22.6)</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>(18.3)</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>(49.0)</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>(19.5)</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>(26.3)</strong></td><td style="background:rgba(69,74,96,.08);" class="num"><strong>(20.5)</strong></td>
+            <td class="num"><strong>(46.8)</strong></td><td class="num"><strong>(26.6)</strong></td><td class="num"><strong>(57.9)</strong></td><td class="num"><strong>(26.1)</strong></td><td class="num"><strong>(26.1)</strong></td><td class="num"><strong>(26.1)</strong></td><td class="num"><strong>(26.1)</strong></td><td class="num"><strong>(33.7)</strong></td><td class="num"><strong>(33.7)</strong></td><td class="num"><strong>(33.7)</strong></td><td class="num"><strong>(33.7)</strong></td><td class="num"><strong>(33.7)</strong></td>
+            <td class="num" style="background:rgba(69,74,96,.1);"><strong>(560.8)</strong></td>
+          </tr>
+
+          <!-- ── CFO ── -->
+          <tr style="background:var(--blue);">
+            <td style="color:var(--cream);font-weight:700;">CFO</td>
+            <td style="color:var(--cream);" class="num">—</td><td style="color:var(--cream);" class="num">(22.6)</td><td style="color:var(--cream);" class="num">(18.3)</td><td style="color:var(--cream);" class="num">(49.0)</td><td style="color:var(--cream);" class="num">(19.5)</td><td style="color:var(--cream);" class="num">(26.3)</td><td style="color:var(--cream);" class="num">(20.5)</td>
+            <td style="color:var(--cream);" class="num">(46.8)</td><td style="color:var(--cream);" class="num">(26.6)</td><td style="color:var(--cream);" class="num">(57.9)</td><td style="color:var(--cream);" class="num">(14.6)</td><td style="color:var(--cream);" class="num">(10.5)</td><td style="color:var(--cream);" class="num">(1.7)</td><td style="color:var(--cream);" class="num">13.6</td><td style="color:var(--cream);" class="num">14.8</td><td style="color:var(--cream);" class="num">12.8</td><td style="color:var(--cream);" class="num">20.7</td><td style="color:var(--cream);" class="num">35.3</td><td style="color:var(--cream);" class="num">76.1</td>
+            <td style="color:var(--cream);" class="num">(141.0)</td>
+          </tr>
+
+          <!-- ── CAPEX / CFI ── -->
+          <tr style="background:rgba(69,74,96,.08);">
+            <td colspan="21" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);padding:8px 16px;">Capital Expenditures (CFI)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Denver</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">(1.9)</td><td style="background:rgba(69,74,96,.04);" class="num">(4.1)</td><td style="background:rgba(69,74,96,.04);" class="num">(6.9)</td><td style="background:rgba(69,74,96,.04);" class="num">(1.9)</td><td style="background:rgba(69,74,96,.04);" class="num">(2.6)</td><td style="background:rgba(69,74,96,.04);" class="num">(588.6)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">(64.9)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(670.9)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Parker</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">(8.6)</td><td style="background:rgba(69,74,96,.04);" class="num">(6.0)</td><td style="background:rgba(69,74,96,.04);" class="num">(5.0)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">(32.5)</td><td class="num">(260.0)</td><td class="num">(260.0)</td><td class="num">(75.4)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(647.5)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Austin</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">(11.8)</td><td style="background:rgba(69,74,96,.04);" class="num">(121.3)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">(2.3)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">120.1</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(15.3)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Fort Worth</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">(4.8)</td><td style="background:rgba(69,74,96,.04);" class="num">(325.7)</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">(18.2)</td><td class="num">(27.2)</td><td class="num">—</td><td class="num">(136.1)</td><td class="num">(211.8)</td><td class="num">(206.5)</td><td class="num">(143.8)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(1,074.0)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">Dallas</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">(13.8)</td><td class="num">(134.9)</td><td class="num">(20.7)</td><td class="num">—</td><td class="num">—</td><td class="num">(155.3)</td><td class="num">(241.5)</td><td class="num">(454.4)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(1,020.6)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">20×10</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">(416.2)</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">(416.2)</td>
+          </tr>
+          <tr style="background:var(--blue);">
+            <td style="color:var(--cream);font-weight:700;">CFI</td>
+            <td style="color:var(--cream);" class="num">(27.0)</td><td style="color:var(--cream);" class="num">(457.2)</td><td style="color:var(--cream);" class="num">(11.9)</td><td style="color:var(--cream);" class="num">(1.9)</td><td style="color:var(--cream);" class="num">(4.8)</td><td style="color:var(--cream);" class="num">(588.6)</td><td style="color:var(--cream);" class="num">120.1</td>
+            <td style="color:var(--cream);" class="num">(64.9)</td><td style="color:var(--cream);" class="num">(64.5)</td><td style="color:var(--cream);" class="num">(422.1)</td><td style="color:var(--cream);" class="num">(696.9)</td><td style="color:var(--cream);" class="num">(211.5)</td><td style="color:var(--cream);" class="num">(211.8)</td><td style="color:var(--cream);" class="num">(361.8)</td><td style="color:var(--cream);" class="num">(385.3)</td><td style="color:var(--cream);" class="num">(454.4)</td><td style="color:var(--cream);" class="num">—</td><td style="color:var(--cream);" class="num">—</td><td style="color:var(--cream);" class="num">—</td>
+            <td style="color:var(--cream);" class="num">(3,844.4)</td>
+          </tr>
+
+          <!-- ── CFF ── -->
+          <tr style="background:rgba(69,74,96,.08);">
+            <td colspan="21" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);padding:8px 16px;">Financing (CFF)</td>
+          </tr>
+          <tr>
+            <td style="padding-left:24px;">(+) Equity Raises</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">320.0</td><td style="background:rgba(69,74,96,.04);" class="num">330.0</td><td style="background:rgba(69,74,96,.04);" class="num">1,293.0</td><td style="background:rgba(69,74,96,.04);" class="num">440.0</td><td style="background:rgba(69,74,96,.04);" class="num">55.0</td><td style="background:rgba(69,74,96,.04);" class="num">—</td><td style="background:rgba(69,74,96,.04);" class="num">—</td>
+            <td class="num">50.0</td><td class="num">58.5</td><td class="num" style="font-weight:700;">1,200.0</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num" style="font-weight:700;">500.0</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">4,246.5</td>
+          </tr>
+
+          <!-- ── SUMMARY ── -->
+          <tr style="background:rgba(69,74,96,.08);">
+            <td colspan="21" style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--blue);padding:8px 16px;">Cash Summary</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Net Change in Cash</strong></td>
+            <td style="background:rgba(69,74,96,.07);" class="num"><strong>293.0</strong></td><td style="background:rgba(69,74,96,.07);" class="num"><strong>(149.8)</strong></td><td style="background:rgba(69,74,96,.07);" class="num"><strong>1,262.8</strong></td><td style="background:rgba(69,74,96,.07);" class="num"><strong>389.1</strong></td><td style="background:rgba(69,74,96,.07);" class="num"><strong>30.7</strong></td><td style="background:rgba(69,74,96,.07);" class="num"><strong>(614.9)</strong></td><td style="background:rgba(69,74,96,.07);" class="num"><strong>99.6</strong></td>
+            <td class="num"><strong>(61.7)</strong></td><td class="num"><strong>(32.5)</strong></td><td class="num"><strong>719.9</strong></td><td class="num"><strong>(711.5)</strong></td><td class="num"><strong>(222.1)</strong></td><td class="num"><strong>(213.5)</strong></td><td class="num"><strong>151.8</strong></td><td class="num"><strong>(370.4)</strong></td><td class="num"><strong>(441.6)</strong></td><td class="num"><strong>20.7</strong></td><td class="num"><strong>35.3</strong></td><td class="num"><strong>76.1</strong></td>
+            <td class="num" style="background:rgba(69,74,96,.08);">307.1</td>
+          </tr>
+          <tr>
+            <td>BOP Cash</td>
+            <td style="background:rgba(69,74,96,.04);" class="num">13.1</td><td style="background:rgba(69,74,96,.04);" class="num">306.1</td><td style="background:rgba(69,74,96,.04);" class="num">156.4</td><td style="background:rgba(69,74,96,.04);" class="num">1,419.1</td><td style="background:rgba(69,74,96,.04);" class="num">1,808.3</td><td style="background:rgba(69,74,96,.04);" class="num">1,838.9</td><td style="background:rgba(69,74,96,.04);" class="num">1,224.0</td>
+            <td class="num">1,323.6</td><td class="num">1,261.9</td><td class="num">1,229.3</td><td class="num">1,949.3</td><td class="num">1,237.8</td><td class="num">1,015.7</td><td class="num">802.3</td><td class="num">954.1</td><td class="num">583.7</td><td class="num">142.1</td><td class="num">162.8</td><td class="num">198.1</td>
+            <td class="num" style="background:rgba(69,74,96,.06);">—</td>
+          </tr>
+          <tr style="background:var(--blue);">
+            <td style="color:var(--cream);font-weight:700;">EOP Cash</td>
+            <td style="color:var(--cream);" class="num">306.1</td><td style="color:var(--cream);" class="num">156.4</td><td style="color:var(--cream);" class="num">1,419.1</td><td style="color:var(--cream);" class="num">1,808.3</td><td style="color:var(--cream);" class="num">1,838.9</td><td style="color:var(--cream);" class="num">1,224.0</td><td style="color:var(--cream);" class="num">1,323.6</td>
+            <td style="color:var(--cream);" class="num">1,261.9</td><td style="color:var(--cream);" class="num">1,229.3</td><td style="color:var(--cream);" class="num">1,949.3</td><td style="color:var(--cream);" class="num">1,237.8</td><td style="color:var(--cream);" class="num">1,015.7</td><td style="color:var(--cream);" class="num">802.3</td><td style="color:var(--cream);" class="num">954.1</td><td style="color:rgba(255,249,243,.7);font-weight:700;" class="num">583.7</td><td style="color:rgba(255,249,243,.6);font-weight:700;" class="num">142.1</td><td style="color:var(--cream);" class="num">162.8</td><td style="color:var(--cream);" class="num">198.1</td><td style="color:var(--cream);" class="num">274.2</td>
+            <td style="color:var(--cream);font-weight:700;" class="num">274.2</td>
+          </tr>
+
+        </tbody>
+      </table>
+      </div>
+
+      <div style="padding:10px 16px;background:rgba(69,74,96,.04);border-radius:var(--radius-sm);border:1px solid rgba(69,74,96,.1);font-size:11px;color:rgba(69,74,96,.55);line-height:1.7;margin-bottom:20px;">
+        <strong style="color:var(--blue);">Legend:</strong> &nbsp;
+        Shaded rows = Actual (Nov 2025 – May 2026) &nbsp;·&nbsp; Unshaded = Projections &nbsp;·&nbsp; All figures USD $000s &nbsp;·&nbsp; Parentheses = outflows
+      </div>
+
+      <div class="two-col">
+        <div class="callout risks">
+          <div class="callout-icon">⚠</div>
+          <div class="callout-body">
+            <div class="callout-title">Watch — Cash Trough Feb 2027</div>
+            <div class="callout-text">
+              Projected EOP cash reaches a low of <strong>$142.1K in February 2027</strong> as construction capex peaks across Fort Worth and Dallas. The $500K equity raise projected in December 2026 and the $1.2M raise in August 2026 are critical to navigating this period.
+            </div>
+          </div>
+        </div>
+        <div class="callout key-update">
+          <div class="callout-icon">📈</div>
+          <div class="callout-body">
+            <div class="callout-title">Revenue Ramp — Q4 2026</div>
+            <div class="callout-text">
+              Denver and 20×10 begin contributing in October 2026. Parker follows in November. CFO turns positive in December 2026 and continues improving through 2027 as the full club portfolio comes online.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div style="margin-top:48px; padding-top:24px; border-top:1px solid rgba(69,74,96,.12); display:flex; justify-content:space-between; align-items:center;">
+    <div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--green);margin-bottom:4px;">Arenna — Unlock Your Potential</div>
+      <div style="font-size:11px;color:rgba(69,74,96,.4);">Board Meeting — June 2026 &nbsp;·&nbsp; May 2026 Reporting Period &nbsp;·&nbsp; Confidential</div>
+    </div>
+    <div style="font-family:var(--font-serif);font-style:italic;font-size:18px;color:var(--pink);opacity:.7;">Arenna</div>
+  </div>
+
+</main>
+
+<script>
+  function toggleSection(id) {
+    const sec = document.getElementById(id);
+    sec.classList.toggle('collapsed');
+  }
+
+  function setActive(el) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Intersection observer for nav highlight
+  const sections = document.querySelectorAll('.section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(n => {
+          n.classList.remove('active');
+          if (n.getAttribute('href') === '#' + id) n.classList.add('active');
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Animate progress bars on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.progress-bar').forEach(bar => {
+      const w = bar.style.width;
+      bar.style.width = '0';
+      setTimeout(() => { bar.style.width = w; }, 300);
+    });
+  });
+</script>
+
+
+
+</body></html>
