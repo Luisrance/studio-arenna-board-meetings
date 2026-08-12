@@ -187,7 +187,7 @@
   .map-card.dark a{color:var(--mint);}
 
   /* ---------- EXPLORAR (zonas + restaurantes) ---------- */
-  .zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:30px;}
+  .zone-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:30px;}
   .zone-card{
     background:#fff;border:1px solid var(--line);border-radius:16px;
     padding:18px;
@@ -423,6 +423,11 @@
         <h3>LoHi</h3>
         <p>Cruzando el río, al noroeste del centro: calles arboladas, azoteas con vista a las montañas y una de las zonas con más buena mesa de Denver.</p>
         <div class="zone-tags"><span class="zone-tag">Lower Highlands</span><span class="zone-tag">Rooftops</span></div>
+      </div>
+      <div class="zone-card">
+        <h3>Washington Park</h3>
+        <p>Uno de los parques más queridos de Denver: lago, senderos y jardines para una caminata tranquila. A la salida, reunión obligada en Devil's Food Bakery por café y pastries.</p>
+        <div class="zone-tags"><span class="zone-tag">Parque</span><span class="zone-tag">Pastries</span></div>
       </div>
     </div>
 
