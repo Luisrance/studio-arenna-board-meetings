@@ -1,0 +1,532 @@
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda · Fin de semana en Denver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;500;600;700;800&amp;family=Noto+Serif:ital,wght@1,400;1,500&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF9F3;
+    --blue:#454A60;
+    --mint:#B7D7C0;
+    --green:#718F85;
+    --pink:#ECCDBC;
+    --orange:#ED7A42;
+    --terracotta:#B93700;
+    --line:#E4DED3;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--blue);
+    font-family:'Red Hat Display',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{max-width:720px;margin:0 auto;padding:0 20px 64px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:44px 4px 28px;
+    overflow:hidden;
+  }
+  .hero svg.arc{position:absolute;top:-30px;right:-60px;width:280px;height:280px;opacity:.55;z-index:0;}
+  .hero-inner{position:relative;z-index:1;}
+  .monogram{
+    width:44px;height:44px;border-radius:50%;
+    background:var(--blue);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Noto Serif',serif;font-style:italic;font-weight:500;
+    font-size:16px;letter-spacing:-1px;margin-bottom:18px;
+  }
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.14em;
+    color:var(--terracotta);text-transform:uppercase;margin-bottom:10px;
+  }
+  .tagline{
+    font-family:'Noto Serif',serif;font-style:italic;font-weight:500;
+    font-size:15px;color:var(--green);margin:0 0 6px;letter-spacing:-.25px;
+  }
+  h1{
+    font-size:32px;font-weight:800;line-height:1.1;margin:0 0 10px;
+    letter-spacing:-.5px;
+  }
+  .dates{
+    font-size:15px;color:var(--blue);opacity:.75;margin:0;font-weight:500;
+  }
+
+  /* ---------- TABS ---------- */
+  .tabs{
+    display:flex;gap:10px;margin:30px 0 26px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    flex:1;background:none;border:none;cursor:pointer;
+    padding:12px 6px 16px;text-align:left;
+    font-family:inherit;color:var(--blue);
+    border-bottom:3px solid transparent;
+    opacity:.5;transition:all .2s ease;
+  }
+  .tab-btn strong{display:block;font-size:17px;font-weight:700;}
+  .tab-btn span{display:block;font-size:12.5px;color:var(--green);margin-top:2px;font-weight:500;}
+  .tab-btn.active{opacity:1;border-bottom-color:var(--terracotta);}
+  .tab-btn:not(.active):hover{opacity:.8;}
+
+  .tab-panel{display:none;animation:fade .35s ease;}
+  .tab-panel.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- SUMMARY STRIP ---------- */
+  .summary-strip{
+    display:flex;gap:10px;flex-wrap:wrap;
+    background:var(--mint);border-radius:14px;
+    padding:14px 16px;margin-bottom:28px;
+  }
+  .summary-strip .item{font-size:13px;font-weight:600;color:var(--blue);display:flex;align-items:center;gap:6px;}
+  .summary-strip .dot{width:4px;height:4px;border-radius:50%;background:var(--blue);opacity:.4;}
+
+  /* ---------- TIMELINE ---------- */
+  .timeline{position:relative;padding-left:28px;}
+  .timeline::before{
+    content:'';position:absolute;left:9px;top:8px;bottom:8px;
+    width:2px;background:var(--line);
+  }
+  .node{position:relative;margin-bottom:6px;}
+  .node::before{
+    content:'';position:absolute;left:-28px;top:4px;
+    width:20px;height:20px;border-radius:50%;
+    background:var(--cream);border:2px solid var(--blue);
+  }
+  .node.pass::before{border-color:var(--green);background:var(--green);}
+  .node.free::before{border-color:var(--orange);background:var(--cream);border-style:dashed;}
+  .node.meal::before{border-color:var(--terracotta);background:var(--terracotta);}
+
+  .stop-card{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:16px 18px;margin-bottom:4px;
+  }
+  .stop-time{font-size:12.5px;font-weight:700;color:var(--terracotta);letter-spacing:.03em;margin-bottom:4px;}
+  .stop-name{font-size:17px;font-weight:700;margin:0 0 3px;}
+  .stop-addr{font-size:13px;color:var(--green);margin:0 0 8px;}
+  .stop-note{font-size:13.5px;color:var(--blue);opacity:.8;line-height:1.5;margin:0;}
+  .stop-badge{
+    display:inline-block;font-size:11.5px;font-weight:700;
+    background:var(--pink);color:var(--terracotta);
+    border-radius:20px;padding:3px 10px;margin-top:10px;
+  }
+
+  .connector{
+    display:flex;align-items:center;gap:8px;
+    font-size:12.5px;font-weight:600;color:var(--green);
+    padding:10px 0 10px 2px;
+  }
+  .connector svg{flex-shrink:0;}
+
+  .free-block{
+    padding:14px 0 14px 2px;font-size:14px;font-weight:600;color:var(--orange);
+    display:flex;align-items:center;gap:8px;
+  }
+
+  /* ---------- MAP CARD ---------- */
+  .map-card{
+    margin-top:26px;background:#fff;border:1px solid var(--line);
+    border-radius:16px;overflow:hidden;
+  }
+  .map-card h3{
+    font-size:14px;font-weight:700;margin:0;padding:16px 18px 12px;
+    text-transform:uppercase;letter-spacing:.08em;color:var(--blue);
+  }
+  .map-card .map-svg{width:100%;height:auto;display:block;background:#fff;}
+  .map-card .map-foot{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 18px;font-size:13px;
+  }
+  .map-card a{color:var(--terracotta);font-weight:700;text-decoration:none;}
+  .map-card a:hover{text-decoration:underline;}
+  .legend{
+    display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;
+    padding:16px 18px 4px;
+  }
+  .legend-item{display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:600;color:var(--blue);}
+  .legend-dot{
+    width:18px;height:18px;border-radius:50%;color:#fff;font-size:10px;font-weight:800;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+
+  /* ---------- SATURDAY ---------- */
+  .day-heading{font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--terracotta);text-transform:uppercase;margin:0 0 18px;}
+
+  .free-card{
+    background:#fff;border:1px dashed var(--green);border-radius:16px;
+    padding:20px;margin-bottom:16px;display:flex;gap:14px;align-items:flex-start;
+  }
+  .free-card h3{margin:0 0 4px;font-size:17px;font-weight:700;}
+  .free-card p{margin:0;font-size:14px;color:var(--blue);opacity:.8;line-height:1.5;}
+
+  .event-card{
+    background:var(--blue);color:var(--cream);border-radius:18px;
+    padding:26px 24px;position:relative;overflow:hidden;
+  }
+  .event-card svg.arc2{position:absolute;bottom:-40px;right:-40px;width:180px;opacity:.18;}
+  .event-eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mint);margin-bottom:8px;position:relative;z-index:1;}
+  .event-card h3{font-size:23px;font-weight:800;margin:0 0 12px;position:relative;z-index:1;}
+  .event-time{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--orange);color:#fff;font-weight:700;font-size:14px;
+    padding:8px 14px;border-radius:20px;margin-bottom:14px;position:relative;z-index:1;
+  }
+  .event-card p{font-size:14.5px;line-height:1.6;opacity:.92;margin:0 0 4px;position:relative;z-index:1;}
+  .event-addr{font-size:13px;opacity:.75;margin-top:10px;position:relative;z-index:1;}
+
+  .map-card.dark{background:rgba(255,249,243,.06);border:1px solid rgba(255,249,243,.2);margin-top:16px;}
+  .map-card.dark h3{color:var(--cream);opacity:.85;}
+  .map-card.dark .map-svg{background:transparent;}
+  .map-card.dark .map-foot{}
+  .map-card.dark a{color:var(--mint);}
+
+  /* ---------- EXPLORAR (zonas + restaurantes) ---------- */
+  .zone-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:30px;}
+  .zone-card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:18px;
+  }
+  .zone-card h3{margin:0 0 6px;font-size:16px;font-weight:800;}
+  .zone-card p{margin:0 0 12px;font-size:13px;color:var(--blue);opacity:.75;line-height:1.5;}
+  .zone-tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .zone-tag{
+    font-size:11px;font-weight:700;background:var(--mint);color:var(--blue);
+    padding:4px 9px;border-radius:20px;
+  }
+
+  .section-label{
+    font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--terracotta);margin:0 0 14px;
+  }
+
+  .rest-list{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:10px;}
+  .rest-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:14px 18px;border-bottom:1px solid var(--line);
+  }
+  .rest-row:last-child{border-bottom:none;}
+  .rest-name{margin:0 0 3px;font-size:15px;font-weight:700;}
+  .rest-cuisine{
+    display:inline-block;font-size:10.5px;font-weight:700;
+    background:var(--pink);color:var(--terracotta);
+    border-radius:20px;padding:2px 8px;margin-left:7px;vertical-align:middle;
+    text-transform:uppercase;letter-spacing:.02em;
+  }
+  .rest-loc{margin:0;font-size:12.5px;color:var(--green);}
+  .rest-link{
+    flex-shrink:0;width:32px;height:32px;border-radius:50%;
+    background:var(--cream);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--blue);text-decoration:none;font-size:14px;font-weight:700;
+    transition:background .15s ease;
+  }
+  .rest-link:hover{background:var(--mint);}
+
+  @media (max-width:480px){
+    h1{font-size:26px;}
+    .tab-btn strong{font-size:15px;}
+    .event-card h3{font-size:20px;}
+    .zone-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    
+    <div class="hero-inner">
+      <div class="monogram">NN</div>
+      <div class="eyebrow">Agenda · Denver</div>
+      <p class="tagline">Unlock your potential</p>
+      <h1>Fin de semana en Denver</h1>
+      <p class="dates">Viernes 14 y sábado 15 de agosto</p>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="friday"><strong>Viernes</strong><span>Recorrido con inversionistas</span></button>
+    <button class="tab-btn" data-tab="saturday"><strong>Sábado</strong><span>Apertura Arenna Denver</span></button>
+    <button class="tab-btn" data-tab="explore"><strong>Explorar</strong><span>Zonas y restaurantes</span></button>
+  </nav>
+
+  <!-- ================= VIERNES ================= -->
+  <section id="friday" class="tab-panel active">
+
+    <div class="summary-strip">
+      <span class="item">5 paradas</span><span class="dot"></span>
+      <span class="item">≈1 h 45 en camino</span><span class="dot"></span>
+      <span class="item">≈1 h 30 en cancha</span><span class="dot"></span>
+      <span class="item">Cierra con cena a las 8:15 p. m.</span>
+    </div>
+
+    <div class="timeline">
+
+      <div class="node">
+        <div class="stop-card">
+          <div class="stop-time">10:30 a. m. — Salida</div>
+          <p class="stop-name">Hyatt Place Denver Downtown</p>
+          <p class="stop-addr">440 14th St, Denver</p>
+          <p class="stop-note">Punto de encuentro. De aquí arranca el recorrido con el grupo.</p>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12h14M13 6l6 6-6 6" stroke="#718F85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        45 min en camino
+      </div>
+
+      <div class="node">
+        <div class="stop-card">
+          <div class="stop-time">11:15 – 11:45 a. m.</div>
+          <p class="stop-name">Parker Racquet Club</p>
+          <p class="stop-addr">18396 Plaza Dr, Parker</p>
+          <p class="stop-note">Primera parada del recorrido: un club público de referencia al sur de la ciudad.</p>
+          <span class="stop-badge">Visita · 30 min</span>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12h14M13 6l6 6-6 6" stroke="#718F85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        15 min en camino
+      </div>
+
+      <div class="node pass">
+        <div class="stop-card">
+          <div class="stop-time">12:00 – 12:15 p. m.</div>
+          <p class="stop-name">Racket Social Club</p>
+          <p class="stop-addr">82 Inverness Dr E, Englewood</p>
+          <p class="stop-note">Concepto social que combina pádel y pickleball.</p>
+          <span class="stop-badge">Visita · 15 min</span>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12h14M13 6l6 6-6 6" stroke="#718F85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        30 min en camino
+      </div>
+
+      <div class="node pass">
+        <div class="stop-card">
+          <div class="stop-time">12:45 – 1:00 p. m.</div>
+          <p class="stop-name">Padel Haus Denver</p>
+          <p class="stop-addr">2501 Welton St, Denver</p>
+          <p class="stop-note">Referencia premium dentro de la ciudad.</p>
+          <span class="stop-badge">Visita · 15 min</span>
+        </div>
+      </div>
+
+      <div class="connector">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12h14M13 6l6 6-6 6" stroke="#718F85" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        15 min en camino
+      </div>
+
+      <div class="node">
+        <div class="stop-card" style="border-color:#B93700;border-width:1.5px;">
+          <div class="stop-time">1:15 – 1:45 p. m.</div>
+          <p class="stop-name">Arenna Denver Padel</p>
+          <p class="stop-addr">2535 W Barberry Pl, Denver</p>
+          <p class="stop-note">El cierre del recorrido, en casa: el corazón del proyecto que están respaldando.</p>
+          <span class="stop-badge">Visita · 30 min</span>
+        </div>
+      </div>
+
+      <div class="node free">
+        <div class="free-block">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#ED7A42" stroke-width="2"></circle><path d="M12 7v5l3 3" stroke="#ED7A42" stroke-width="2" stroke-linecap="round"></path></svg>
+          Tarde libre
+        </div>
+      </div>
+
+      <div class="node meal">
+        <div class="stop-card">
+          <div class="stop-time">8:15 p. m. — Cena</div>
+          <p class="stop-name">North Italia</p>
+          <p class="stop-addr">190 Clayton Ln, Denver (Cherry Creek)</p>
+          <p class="stop-note">Para cerrar el día con una buena mesa.</p>
+        </div>
+      </div>
+
+    </div>
+
+    
+
+  </section>
+
+  <!-- ================= SÁBADO ================= -->
+  <section id="saturday" class="tab-panel">
+
+    <p class="day-heading">Sábado 15 de agosto</p>
+
+    <div class="free-card">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="4" stroke="#718F85" stroke-width="1.8"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="#718F85" stroke-width="1.8" stroke-linecap="round"></path></svg>
+      <div>
+        <h3>Mañana libre</h3>
+        <p>Tiempo abierto para descansar, desayunar con calma o dar una vuelta por la ciudad antes del gran día.</p>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <svg class="arc2" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10,180 C60,20 140,20 190,120" stroke="#ED7A42" stroke-width="14" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <div class="event-eyebrow">Día de apertura</div>
+      <h3>Apertura Arenna Denver Padel</h3>
+      <div class="event-time">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2"></circle><path d="M12 7v5l3 3" stroke="#fff" stroke-width="2" stroke-linecap="round"></path></svg>
+        2:00 – 8:00 p. m.
+      </div>
+      <p>Pueden llegar y quedarse el tiempo que gusten dentro de ese horario, sin agenda fija: la idea es que vivan el club en movimiento.</p>
+      <p class="stop-note" style="opacity:.85;">Coincide con el torneo de exhibición de apertura, con los mejores jugadores de pádel de Colorado en cancha.</p>
+      <p class="event-addr">2535 W Barberry Pl, Denver, CO 80204</p>
+    </div>
+
+    <div class="map-card dark">
+      <h3>Ubicación</h3>
+      <svg class="map-svg" viewBox="0 0 410 170" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="dots2" width="18" height="18" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="rgba(255,249,243,.14)"></circle>
+          </pattern>
+        </defs>
+        <rect width="410" height="170" fill="url(#dots2)"></rect>
+        <circle cx="205" cy="85" r="26" fill="none" stroke="#ED7A42" stroke-width="1.6" opacity=".55"></circle>
+        <circle cx="205" cy="85" r="15" fill="#B93700" stroke="#FFF9F3" stroke-width="3"></circle>
+        <text x="205" y="85" dy=".35em" text-anchor="middle" font-family="Red Hat Display, sans-serif" font-size="12" font-weight="800" fill="#FFF9F3">NN</text>
+      </svg>
+      <div class="map-foot">
+        <span style="color:#B7D7C0;">Arenna Denver Padel</span>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=2535+W+Barberry+Pl+Denver+CO+80204" target="_blank">Abrir en Maps ↗</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================= EXPLORAR ================= -->
+  <section id="explore" class="tab-panel">
+
+    <p class="day-heading">Zonas para conocer</p>
+
+    <div class="zone-grid">
+      <div class="zone-card">
+        <h3>Union Station</h3>
+        <p>El corazón del centro: la antigua estación de tren, hoy convertida en punto de encuentro con bares, restaurantes y ambiente caminable. Buen punto de partida para moverse a pie por LoDo.</p>
+        <div class="zone-tags"><span class="zone-tag">LoDo</span><span class="zone-tag">Caminable</span></div>
+      </div>
+      <div class="zone-card">
+        <h3>LoHi</h3>
+        <p>Cruzando el río, al noroeste del centro: calles arboladas, azoteas con vista a las montañas y una de las zonas con más buena mesa de Denver.</p>
+        <div class="zone-tags"><span class="zone-tag">Lower Highlands</span><span class="zone-tag">Rooftops</span></div>
+      </div>
+    </div>
+
+    <p class="section-label" style="margin-top:6px;">Restaurantes recomendados</p>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Fusión</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Bruto<span class="rest-cuisine">Fusión</span></p><p class="rest-loc">LoDo · 1801 Blake St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Bruto+1801+Blake+St+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Asiático</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Kawa Ni<span class="rest-cuisine">Tailandés</span></p><p class="rest-loc">LoHi · 1900 W 32nd Ave</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Kawa+Ni+1900+W+32nd+Ave+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Sap Sua<span class="rest-cuisine">Vietnamita</span></p><p class="rest-loc">Congress Park · 2550 E Colfax Ave</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Sap+Sua+2550+E+Colfax+Ave+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Le Colonial<span class="rest-cuisine">Vietn.-francesa</span></p><p class="rest-loc">Cherry Creek · 255 Fillmore St · también en Chicago</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Colonial+255+Fillmore+St+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Uncle<span class="rest-cuisine">Ramen</span></p><p class="rest-loc">Cherry Creek · 95 S Pennsylvania St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Uncle+95+S+Pennsylvania+St+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Sushi</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Uchi<span class="rest-cuisine">Sushi</span></p><p class="rest-loc">RiNo · 2500 Lawrence St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Uchi+2500+Lawrence+St+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Uchiko<span class="rest-cuisine">Sushi</span></p><p class="rest-loc">Cherry Creek · 299 Fillmore St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Uchiko+299+Fillmore+St+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Temaki Den<span class="rest-cuisine">Hand rolls</span></p><p class="rest-loc">RiNo · 3350 Brighton Blvd</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Temaki+Den+3350+Brighton+Blvd+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Sushi Den<span class="rest-cuisine">Sushi</span></p><p class="rest-loc">South Pearl · 1487 S Pearl St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Sushi+Den+1487+S+Pearl+St+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Mexicano</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Alteño<span class="rest-cuisine">Mexicano</span></p><p class="rest-loc">Cherry Creek · 249 Clayton St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Alteno+249+Clayton+St+Denver+CO" target="_blank">↗</a>
+      </div>
+      <div class="rest-row">
+        <div><p class="rest-name">Alma Fonda Fina<span class="rest-cuisine">Mexicano</span></p><p class="rest-loc">LoHi · 2556 15th St</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Alma+Fonda+Fina+2556+15th+St+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Mediterráneo</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Safta<span class="rest-cuisine">Israelí</span></p><p class="rest-loc">RiNo · 3330 Brighton Blvd</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Safta+3330+Brighton+Blvd+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Italiano</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Tavernetta<span class="rest-cuisine">Italiano</span></p><p class="rest-loc">LoDo · 1889 16th St Mall</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Tavernetta+1889+16th+St+Mall+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <p class="section-label" style="color:var(--green);margin-bottom:8px;">Francés</p>
+    <div class="rest-list">
+      <div class="rest-row">
+        <div><p class="rest-name">Le Bilboquet<span class="rest-cuisine">Francés</span></p><p class="rest-loc">Cherry Creek · 299 St Paul St · también en NY</p></div>
+        <a class="rest-link" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Bilboquet+299+St+Paul+St+Denver+CO" target="_blank">↗</a>
+      </div>
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+
+
+</body></html>
